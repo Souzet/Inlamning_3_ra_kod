@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Inlamning_3_ra_kod
 {
@@ -21,6 +23,9 @@ namespace Inlamning_3_ra_kod
     {
         public double X, Y, Z, T;
         public string entry;
+        public string varName;
+        string[] vars = new string[8];
+        
         /* CONSTRUCTOR: CStack
          * PURPOSE: create a new stack and init X, Y, Z, T and the text entry
          * PARAMETERS: --
@@ -29,6 +34,14 @@ namespace Inlamning_3_ra_kod
         {
             X = Y = Z = T = 0;
             entry = "";
+
+
+
+            /* public class VarEntry
+            {
+                 string varName;
+                 double value;
+            }*/
         }
         /* METHOD: Exit
          * PURPOSE: called on exit, prepared for saving
@@ -52,11 +65,18 @@ namespace Inlamning_3_ra_kod
         /* METHOD: VarString
          * PURPOSE: construct a string to write out in a variable list
          * PARAMETERS: --
-         * RETURNS: NOT YET IMPLEMENTED
+         * RETURNS: Contains the value inarray vars.
          */
         public string VarString()
         {
-            return "insertme";
+            //return "insertme";
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < vars.Length; i++)
+            {
+                sb.Append($"{vars[i]}\n");
+            }
+            return sb.ToString();
+
         }
         /* METHOD: SetX
          * PURPOSE: set X with overwrite
@@ -249,6 +269,7 @@ namespace Inlamning_3_ra_kod
          */
         public void SetAddress(string name)
         {
+           varName = name;
 
         }
         /* METHOD: SetVar
@@ -259,6 +280,18 @@ namespace Inlamning_3_ra_kod
          */
         public void SetVar()
         {
+            switch (varName)
+            {
+                case "A": vars[0] = X.ToString(); break;
+                case "B": vars[1] = X.ToString(); break;
+                case "c": vars[2] = X.ToString(); break;
+                case "D": vars[3] = X.ToString(); break;
+                case "E": vars[4] = X.ToString(); break;
+                case "F": vars[5] = X.ToString(); break;
+                case "G": vars[6] = X.ToString(); break;
+                case "H": vars[7] = X.ToString(); break;
+
+            }
 
         }
         /* METHOD: GetVar
@@ -269,6 +302,18 @@ namespace Inlamning_3_ra_kod
          */
         public void GetVar()
         {
+            switch (varName)
+            {
+                case "A": RollSetX(double.Parse(vars[0])); break;
+                case "B": RollSetX(double.Parse(vars[1])); break;
+                case "C": RollSetX(double.Parse(vars[2])); break;
+                case "D": RollSetX(double.Parse(vars[3])); break;
+                case "E": RollSetX(double.Parse(vars[4])); break;
+                case "F": RollSetX(double.Parse(vars[5])); break;
+                case "G": RollSetX(double.Parse(vars[6])); break;
+                case "H": RollSetX(double.Parse(vars[7])); break;
+
+            }
 
         }
     }
