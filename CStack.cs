@@ -24,8 +24,7 @@ namespace Inlamning_3_ra_kod
         public double X, Y, Z, T;
         public string entry;
         public string varName;
-        string[] vars = new string[8];
-        
+        string[] vars = new string[8];        
         /* CONSTRUCTOR: CStack
          * PURPOSE: create a new stack and init X, Y, Z, T and the text entry
          * PARAMETERS: --
