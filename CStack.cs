@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -24,32 +25,66 @@ namespace Inlamning_3_ra_kod
         public double X, Y, Z, T;
         public string entry;
         public string varName;
-        string[] vars = new string[8];        
+        string[] vars = new string[8];
+        string file = @"C:\Users\souzet\source\repos\Inlamning_3_ra_kod\molkfreecalc.clc.txt";
+        public List<string> fileValue;
         /* CONSTRUCTOR: CStack
          * PURPOSE: create a new stack and init X, Y, Z, T and the text entry
          * PARAMETERS: --
          */
         public CStack()
         {
-            X = Y = Z = T = 0;
             entry = "";
 
-
-
-            /* public class VarEntry
+            if (File.Exists(file))
             {
-                 string varName;
-                 double value;
-            }*/
+                fileValue = ReadFile(file);
+                X = double.Parse(fileValue[0]);
+                Y = double.Parse(fileValue[1]);
+                Z = double.Parse(fileValue[2]);
+                T = double.Parse(fileValue[3]);
+
+                int j = 4;
+                for (int i = 0; i < vars.Length; i++)
+                {
+                    vars[i] = fileValue[j];
+                    j++;
+                }
+            }
+            else
+            {
+                X = Y = Z = T = 0;
+            }
         }
+        /* METHOD: ReadFile
+         * PURPOSE:Read text file
+         */
+        public List<string> ReadFile(string file)
+        {
+            List<string> fileValue;
+            using (StreamReader sr = new StreamReader(file))
+            {
+                fileValue = sr.ReadToEnd().ToString().Split(';').ToList();
+            }
+            return fileValue;
+        }
+        
         /* METHOD: Exit
-         * PURPOSE: called on exit, prepared for saving
+         * PURPOSE: called on exit, save to file
          * PARAMETERS: --
          * RETURNS: --
          */
         public void Exit()
         {
-
+            using(StreamWriter sw = new StreamWriter(file))
+            {
+                StringBuilder sb = new StringBuilder();
+                for(int i =0; i<vars.Length; i++)
+                {
+                    sb.Append($"{vars[i]};");
+                }
+                sw.Write(@"{0};{1};{2};{3}", X, Y, Z, T);
+            }
         }
         /* METHOD: StackString
          * PURPOSE: construct a string to write out in a stack view
@@ -74,6 +109,7 @@ namespace Inlamning_3_ra_kod
             {
                 sb.Append($"{vars[i]}\n");
             }
+            sb.Append(varName);
             return sb.ToString();
 
         }
@@ -94,6 +130,7 @@ namespace Inlamning_3_ra_kod
          * FAILS: if the string digit does not contain a parseable integer, nothing
          *   is added to the entry
          */
+
         public void EntryAddNum(string digit)
         {
             int val;
